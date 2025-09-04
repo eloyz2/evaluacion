@@ -1,0 +1,47 @@
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Dashboard</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Dispositivos por Categoría</h5>
+        <p>{{ devices_by_category }}</p>
+        <a href="{% url 'device_list' %}">Ver más</a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Dispositivos por Zona</h5>
+        <p>{{ devices_by_zone }}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Alertas recientes</h5>
+        <ul>
+          {% for alert in alerts %}
+          <li>{{ alert.device.name }} - {{ alert.severity }}</li>
+          {% empty %} <p>No hay alertas</p>
+          {% endfor %}
+        </ul>
+        <a href="{% url 'alert_list' %}">Ver todas</a>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mt-4">Últimas Mediciones</h4>
+  <table class="table">
+    <tr><th>Fecha</th><th>Dispositivo</th><th>Valor</th></tr>
+    {% for m in measurements %}
+    <tr>
+      <td>{{ m.created_at }}</td>
+      <td>{{ m.device.name }}</td>
+      <td>{{ m.value }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No hay mediciones</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
